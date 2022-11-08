@@ -206,7 +206,7 @@
             let signUpFormOBJ = JSON.stringify(signUpForm);
             console.log('form ==> ', signUpFormOBJ)
             $.ajax({
-                url: 'http://localhost:8080/api/auth/signup',
+                url: 'https://zigmp3.herokuapp.com/api/auth/signup',
                 data: signUpFormOBJ,
                 contentType: 'application/json; charset=UTF8',
                 method: 'POST',
