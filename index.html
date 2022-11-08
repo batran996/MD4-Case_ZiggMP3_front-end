@@ -69,16 +69,16 @@
                                     <div class="form-outline mb-4">
                                         <input type="email" id="username" class="form-control"
                                                placeholder="Tên Tài Khoản Đăng Nhập"/>
-                                        <label class="form-label" for="username"> UserName </label>
+                                        <label class="form-label" for="username"></label>
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <input placeholder="Mật khẩu" type="password" id="pass" class="form-control"/>
-                                        <label class="form-label" for="pass">Password</label>
+                                        <label class="form-label" for="pass"></label>
                                     </div>
 
                                     <div class="text-center pt-1 mb-5 pb-1">
-                                        <button onclick="login()" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                        <button onclick="index()" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
                                                 type="button">
                                             Đăng Nhập
                                         </button>
@@ -86,8 +86,8 @@
                                     </div>
 
                                     <div class="d-flex align-items-center justify-content-center pb-4">
-                                        <p class="mb-0 me-2">Nếu Bạn Chưa Có Tài Khoản?</p>
-                                        on<a href="register.html">
+                                        <p class="mb-0 me-2">Nếu Bạn Chưa Có Tài Khoản !</p>
+                                        <a href="register.html">
                                             <button type="button" class="btn btn-outline-danger">Đăng Ký Ngay</button>
                                         </a>
                                     </div>
@@ -111,6 +111,7 @@
             </div>
         </div>
     </div>
+    <h1>Hello</h1>
 </section>
 <script>
 
@@ -127,10 +128,13 @@ function actionLogin(data){
     $.ajax({
         url: "http://localhost:8080/api/auth/signin",
         type: 'POST',
-        contentType:'application/json',
+        contentType:'application/json;charset=utf-8',
         data:JSON.stringify(data),
         success: function(res) {
-            loginSuccess(res)
+            loginSuccess(res);
+            window.localStorage.setItem("NAME_KEY",res.name);
+            window.localStorage.setItem("TOKEN_KEY",res.token);
+            window.localStorage.setItem("AVATAR_KEY",res.avatar);
         },
         error:function (res){
             loginFailed(res);
@@ -142,14 +146,10 @@ function loginSuccess(res){
     console.log(res.roles[0].authority);
     if(res.roles[0].authority == "ADMIN"){
         window.location.href = 'homeAdmin.html';
-        // alert("Login success");
     }
     if (res.roles[0].authority == "USER"){
-        window.location.href = 'homeUser/homeUser.html';
-        // alert("Login success");
+        window.location.href = '/homeUser/homeUser.html';
     }
-
-
 }
 function loginFailed(){
     alert("Login failed")

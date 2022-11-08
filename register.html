@@ -87,50 +87,57 @@
 
                 <div class="card bg-glass">
                     <div class="card-body px-4 py-5 px-md-5">
-                        <form>
-                            <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="form-outline">
-                                        <input type="text" id="name" class="form-control"/>
-                                        <label class="form-label" for="name">Tên Người Dùng</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="form-outline">
-                                        <input type="text" id="username" class="form-control"/>
-                                        <label class="form-label" for="username">Tên Tài Khoản</label>
-                                    </div>
+                        <!--                        <form>-->
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+
+                                    <input oninput="validate()" placeholder="Tên người dùng" type="text" id="name"
+                                           class="form-control"/>
+                                    <label id="validate_name" class="form-label" for="name"></label>
                                 </div>
                             </div>
-
-                            <!-- Email input -->
-                            <div class="form-outline mb-4">
-                                <input type="email" id="email" class="form-control"/>
-                                <label class="form-label" for="email">Email Ngừoi Dùng</label>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <input oninput="validate()" placeholder="Tên tài khoản" type="text" id="username"
+                                           class="form-control"/>
+                                    <label id="validate_username" class="form-label" for="username"></label>
+                                </div>
                             </div>
+                        </div>
 
-                            <!-- Password input -->
-                            <div class="form-outline mb-4">
-                                <input type="password" id="pass" class="form-control"/>
-                                <label class="form-label" for="pass">Mật Khẩu</label>
-                            </div>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input oninput="validate()" placeholder="Email người dùng" type="email" id="email"
+                                   class="form-control"/>
+                            <label id="validate_email" class="form-label" for="email"></label>
+                        </div>
 
-                            <!-- Checkbox -->
-                            <div class="form-check d-flex justify-content-center mb-4">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33"
-                                       checked/>
-                                <label class="form-check-label" for="form2Example33">
-                                    Tôi Đồng Ý Với Các Điều Khoản
-                                </label>
-                            </div>
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                            <input type="password" placeholder="Mật Khẩu" id="pass" class="form-control"/>
+                            <label class="form-label" for="pass"></label>
+                        </div>
 
-                            <!-- Submit button -->
+                        <!-- Checkbox -->
+                        <div class="form-check d-flex justify-content-center mb-4">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33"
+                                   checked/>
+                            <label class="form-check-label" for="form2Example33">
+                                Tôi Đồng Ý Với Các Điều Khoản
+                            </label>
+                        </div>
 
-                            <button onclick="registerAcout()" type="submit" class="btn btn-primary btn-block mb-4">
-                                Đăng Ký
-                            </button>
-                        </form>
+                        <!-- Submit button -->
+
+                        <button id="register" type="submit" class="btn btn-primary btn-block mb-4">
+                            Đăng Ký
+                        </button>
+                        <a href="index.html"><button style="justify-items: end" class="btn btn-primary btn-block mb-4">
+                            Đăng Nhập
+                        </button> </a>
+                        <!--                        </form>-->
                     </div>
                 </div>
             </div>
@@ -140,42 +147,83 @@
 <!-- Section: Design Block -->
 
 <script>
-    function registerAcout() {
-        let name = $("#name").val();
-        let username = $("#username").val();
-        let email = $("#email").val();
-        let password = $("#pass").val();
-        let user = {};
-        user.name = name;
-        user.username = username;
-        user.email = email;
-        user.password = password;
-        actionRegister(user);
+    let email;
+    function validateEmail() {
+        email = document.getElementById("email").value;
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+            return (true);
+        }
+        return (false);
     }
-    function actionRegister(data) {
-        $.ajax({
-            url:"http://localhost:8080/api/auth/signup",
-            type:"POST",
-            contentType:"application/json",
-            data:JSON.stringify(data),
-            success:function () {
-                successRegis();
-            },
-            error:function () {
-                errorRegis();
-            }
+
+    function validate() {
+        let name = document.getElementById('name').value;
+        if (name === '') {
+            document.getElementById('validate_name').innerHTML = '<label style="color: #e85e5e" >không để tên trống</label>'
+            return
+        } else if (name.length < 2 || name.length > 40) {
+            document.getElementById('validate_name').innerHTML = '<label style="color: #e85e5e" >tên phải nằm trong khoảng 2-40 ký tự</label>'
+        } else if (name.length > 40) {
+            document.getElementById('validate_name').innerHTML = '<label style="color: #e85e5e" >tên phải nằm trong khoảng 2-40 ký tự</label>'
+        } else {
+            document.getElementById('validate_name').innerHTML = ''
+        }
+
+        let username = document.getElementById("username").value;
+        if (username === '') {
+            document.getElementById("validate_username").innerHTML = '<label style="color: #e85e5e" >không để tên trống</label>';
+        } else if (username.length < 5 || username.length > 30) {
+            document.getElementById("validate_username").innerHTML = '<label style="color: #e85e5e" >tên phải nằm trong khoảng 5-30 ký tự</label>'
+        } else if (username.length > 30) {
+            document.getElementById("validate_username").innerHTML = '<label style="color: #e85e5e" >tên phải nằm trong khoảng 5-30 ký tự</label>'
+        } else {
+            document.getElementById("validate_username").innerHTML = '';
+        }
+        if (email === '') {
+            document.getElementById('validate_email').innerHTML = '<label style="color: #e85e5e">Email không để trống!</label>'
+            return;
+        } else if (!validateEmail()) {
+            document.getElementById('validate_email').innerHTML = '<label style="color: #e85e5e">Email sai định dạng!</label>'
+            return;
+        } else {
+            document.getElementById('validate_email').innerHTML = ''
+        }
+    }
+
+
+
+    $(document).ready(function () {
+        validate();
+        let signUpForm = {}
+
+        $('#register').click(function () {
+
+            signUpForm.name = $('#name').val();
+            signUpForm.username = $('#username').val();
+            signUpForm.email = $('#email').val();
+            signUpForm.password = $('#pass').val();
+            signUpForm.roles = ["user"]
+            let signUpFormOBJ = JSON.stringify(signUpForm);
+            console.log('form ==> ', signUpFormOBJ)
+            $.ajax({
+                url: 'http://localhost:8080/api/auth/signup',
+                data: signUpFormOBJ,
+                contentType: 'application/json; charset=UTF8',
+                method: 'POST',
+                success: function (data) {
+                    if (data.message === 'username_existed') {
+                        document.getElementById('validate_name').innerHTML = 'Tài khoản đã tồn tại! Vui lòng nhập lại';
+                    } else if (data.message === 'email_existed') {
+                        document.getElementById('validate_name').innerHTML = 'Email đã tồn tại! Vui lòng nhập lại!';
+                    } else if (data.message === 'create_success') {
+                        document.getElementById('validate_name').innerHTML = 'Đăng Ký Thành Công ! '                   }
+                },
+                error:function (data){
+                    document.getElementById('validate_name').innerHTML = 'Đăng Ký Không Thành Công ! '
+                }
+            })
         })
-    }
-    function successRegis() {
-        window.location.href="login.html";
-        alert("đăng ký thành công");
-    }
-     function errorRegis() {
-
-         alert("đăng ký không thành công")
-     }
-
-
+    })
 
 
 </script>
