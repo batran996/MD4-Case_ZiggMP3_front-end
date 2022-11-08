@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="text-center pt-1 mb-5 pb-1">
-                                        <button onclick="index()" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                        <button onclick="login()" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
                                                 type="button">
                                             Đăng Nhập
                                         </button>
@@ -131,7 +131,9 @@ function actionLogin(data){
         contentType:'application/json;charset=utf-8',
         data:JSON.stringify(data),
         success: function(res) {
+            console.log('day laf ressss',res)
             loginSuccess(res);
+
             window.localStorage.setItem("NAME_KEY",res.name);
             window.localStorage.setItem("TOKEN_KEY",res.token);
             window.localStorage.setItem("AVATAR_KEY",res.avatar);
