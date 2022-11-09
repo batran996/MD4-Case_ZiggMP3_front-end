@@ -20,12 +20,13 @@
 
 .sidebar__logo {
     width: 240px;
-    height: 70px;
-    background-image: url(../img/sidebar-icon/logo/logo-dark.svg);
+    height: 50px;
+    background-image: url(../img/mp3loogo.jpeg);
     background-size: 50%;
     background-repeat: no-repeat;
     background-position-x: 28px;
     background-position-y: 50%;
+    border-radius: 50%;
 }
 
 .sidebar__persional {
