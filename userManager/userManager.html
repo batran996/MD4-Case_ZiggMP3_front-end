@@ -49,20 +49,21 @@
 </div>
 <!--https://zigmp3.herokuapp.com/api/admin/listuser-->
 <script>
-    let url = "https://zigmp3.herokuapp.com/api/admin/listuser";
+    let url = "https://zigmp3.herokuapp.com/api/admin/listuser?page=";
     let page = 0;
     $(document).ready(function () {
         getListUser();
         })
     function getListUser(){
+        console.log(page);
         $.ajax({
-            url:url +'?page='+ page ,
+            url:url + page ,
             method:"GET",
             headers : {'Authorization': 'Bearer '+window.localStorage.getItem('TOKEN_KEY'),
-                'Access-Control-Allow-Origin': '*',
             },
             success:function (data){
                 let users = data.content;
+                console.log(users);
                 let tbody = $("#tbody")
                 tbody.empty();
 
@@ -108,6 +109,7 @@
         getListUser()
     }
     function nextPage() {
+        console.log("Hello")
         page ++;
         getListUser()
     }
