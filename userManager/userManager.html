@@ -56,7 +56,7 @@
         })
     function getListUser(){
         $.ajax({
-            url:url + page ,
+            url:url +'?page='+ page ,
             method:"GET",
             headers : {'Authorization': 'Bearer '+window.localStorage.getItem('TOKEN_KEY'),
                 'Access-Control-Allow-Origin': '*',
