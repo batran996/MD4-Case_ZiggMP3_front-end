@@ -47,9 +47,9 @@
 <div id="page">
 
 </div>
-
+<!--https://zigmp3.herokuapp.com/api/admin/listuser-->
 <script>
-    let url = "https://zigmp3.herokuapp.com/api/admin/listuser?page=";
+    let url = "https://zigmp3.herokuapp.com/api/admin/listuser";
     let page = 0;
     $(document).ready(function () {
         getListUser();
@@ -58,7 +58,9 @@
         $.ajax({
             url:url + page ,
             method:"GET",
-            headers : {'Authorization': 'Bearer '+window.localStorage.getItem('TOKEN_KEY')},
+            headers : {'Authorization': 'Bearer '+window.localStorage.getItem('TOKEN_KEY'),
+                'Access-Control-Allow-Origin': '*',
+            },
             success:function (data){
                 let users = data.content;
                 let tbody = $("#tbody")
