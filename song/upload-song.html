@@ -21,9 +21,51 @@
     </select>
     <button id="create">upload video</button><br>
     <div></div>
-
-
 </div>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>URL SONG</th>
+        <th>DELETE</th>
+        <th>EDIT</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+<script>
+    $.ajax({
+        url:"http://localhost:8080/api/song",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listSong = data.content;
+            drawSong(listSong);
+        }
+    })
+    function drawSong(song){
+        let drawSong='';
+        for (let i = 0; i < song.length; i++) {
+            console.log(song[i])
+            console.log("data",song)
+            drawSong+=`<tr>
+<td>${song[i].id}</td>
+<td>${song[i].name}</td>
+<td>${song[i].background}</td>
+<td>${song[i].duration}</td>
+<td>${song[i].pathSong}</td>
+
+ <td><a href="deleteSong.html?id=${song[i].id}">Delete</a></td>
+  <td><a href="editSong.html?id=${song[i].id}">Edit</a></td>
+</tr>`
+        }
+        document.getElementById("tbody").innerHTML=drawSong;
+    }
+</script>
 <script>
 
 </script>

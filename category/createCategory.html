@@ -29,7 +29,7 @@
             }
             console.log(JSON.stringify(nameCategory))
             $.ajax({
-                url:'https://zigmp3.herokuapp.com/api/manager/categories',
+                url:'http://localhost:8080/api/categories',
                 method:'POST',
                 headers:{
                     Authorization: "Bearer " + window.localStorage.getItem('TOKEN_KEY')
