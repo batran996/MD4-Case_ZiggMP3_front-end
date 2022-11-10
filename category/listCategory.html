@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<p><a href="../../homeAdmin.html">Back</a></p>
+<a href="createCategory.html">Create Category</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>DELETE</th>
+        <th>EDIT</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+<script>
+    let url = "https://zigmp3.herokuapp.com/api/categories";
+    $(document).ready(function () {
+        showForm();
+    })
+
+    function showForm() {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            headers:{
+                Authorization:"Bearer" + window.localStorage.getItem('TOKEN_KEY')
+            },
+            contentType: 'application/Json; charset=UTF-8',
+            success: function (data) {
+                let drawTable = ''
+                for (let i = 0; i < data.length; i++) {
+                    console.log("data", data[i])
+                    drawTable += `<tr>
+<td>${data[i].id}</td>
+<td>${data[i].content.name}</td>
+ <td><a href="deleteCategory.html?id=${data[i].id}">Delete</a></td>
+  <td><a href="editCategory.html?id=${data[i].id}">Edit</a></td>
+</tr>`
+                }
+                document.getElementById('tbody').innerHTML = drawTable
+
+            }
+        })
+    }
+</script>
+</body>
+</html>
