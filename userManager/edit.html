@@ -28,7 +28,7 @@
     </tr>
     <tr>
         <td>Role</td>
-        <td><select id="role">
+        <td><select id="role" multiple>
             <option value="1">USER</option>
             <option value="3">ADMIN</option>
             <option value="2">PM</option>
@@ -36,7 +36,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <button style="width: 100%" onclick="editPro()">edit</button>
+            <button style="width: 100%" onclick="editUser()">edit</button>
         </td>
     </tr>
 </table>
@@ -67,42 +67,15 @@
         })
     }
 
-
-    // function getRole() {
-    //     $.ajax({
-    //         url: "http://localhost:8080/api/category",
-    //         method: "GET",
-    //
-    //         success: function (data) {
-    //             console.log(data.content)
-    //             let categorys = data.content;
-    //             let select = $("#category");
-    //
-    //             for (let i = 0; i < categorys.length; i++) {
-    //                 let cate = categorys[i];
-    //                 select.append(
-    //                     `
-    //                 <option value="${cate.id}">
-    //                 ${cate.name}
-    //                 </option>
-    //                 `)
-    //
-    //             }
-    //         },
-    //         error: function () {
-    //             alert('error')
-    //         }
-    //
-    //     })
-    // }
-    function editPro() {
+    function editUser() {
         let userEdit = {
             name: $("#name").val(),
             username: $("#username").val(),
             avatar: $("#avatar").val(),
             email: $("#email").val(),
-            role: $("#role").val(),
+            roles: $("#role").val(),
         }
+        console.log(userEdit)
         $.ajax({
             url: "https://zigmp3.herokuapp.com/api/admin/" + id,
             method: "PUT",
@@ -115,10 +88,10 @@
             error: function () {
                 alert(" edit failer")
             }
-
         })
 
     }
+
 </script>
 </body>
 </html>
