@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<table border="1">
+    <p id="create"></p>
+    <tr>
+        <td>name</td>
+        <td><input type="text"id="nameCategory"></td>
+
+    </tr>
+
+    <tr>
+        <td> <button id="button">create</button></td>
+        <td><a href="listCategory.html">back</a></td>
+    </tr>
+</table>
+<script>
+    $(document).ready(function (){
+        $('#button').click(function (){
+            let nameCategory = {
+                name :$('#nameCategory').val()
+            }
+            console.log(JSON.stringify(nameCategory))
+            $.ajax({
+                url:'http://localhost:8080/api/categories',
+                method:'POST',
+                headers:{
+                    Authorization: "Bearer " + window.localStorage.getItem('TOKEN_KEY')
+                },
+                contentType:'application/Json; charset=UTF-8',
+                data: JSON.stringify(nameCategory),
+                success:function (){
+                    document.getElementById('create').innerHTML = "create success!"
+                    return;
+                },
+                error: function (){
+                    document.getElementById('create').innerHTML = "create failed ! "
+                }
+            })
+
+        })
+    })
+</script>
+</body>
+</html>

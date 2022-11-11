@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+</head>
+<body>
+<div id="nav-bar"></div>
+<p id="add"></p>
+<h1>upload nhac</h1>
+<span style="color: red" id="validate"></span>
+<div id="loading"></div>
+<input type="file" value="upload"  id="fileButton">
+
+<div>
+    <input type="text" id="title" placeholder="title video">
+    <select id="category">
+    </select>
+    <button id="create">upload video</button><br>
+    <div></div>
+</div>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>URL SONG</th>
+        <th>BACK GROW</th>
+        <th>TIME</th>
+        <th>DELETE</th>
+        <th>EDIT</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+<script>
+    $.ajax({
+        url:"http://localhost:8080/api/song",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listSong = data.content;
+            drawSong(listSong);
+        }
+    })
+    function drawSong(song){
+        let drawSong='';
+        for (let i = 0; i < song.length; i++) {
+            console.log(song[i])
+            console.log("data",song)
+            drawSong+=`<tr>
+<td>${song[i].id}</td>
+<td>${song[i].name}</td>
+<td>${song[i].background}</td>
+<td>${song[i].duration}</td>
+<td>${song[i].pathSong}</td>
+
+ <td><a href="deleteSong.html?id=${song[i].id}">Delete</a></td>
+  <td><a href="editSong.html?id=${song[i].id}">Edit</a></td>
+</tr>`
+        }
+        document.getElementById("tbody").innerHTML=drawSong;
+    }
+</script>
+<script>
+
+</script>
+<script src="upload-video.js"></script>
+
+<script>
+    $.ajax({
+        url:"http://localhost:8080/api/categories",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listCategory = data.content;
+            drawSelect(listCategory);
+        }
+    })
+    function drawSelect(list){
+        let drawOption='';
+        for (let i = 0; i < list.length; i++) {
+            console.log("data",list[i])
+            drawOption+=`<option value="${list[i].id}">${list[i].name}</option>`
+        }
+        document.getElementById("category").innerHTML=drawOption;
+    }
+    $.ajax({
+        url:"http://localhost:8080/api/song",
+        method: ""
+    })
+</script>
+</body>
+</html>

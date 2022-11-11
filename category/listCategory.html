@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<p><a href="../../homeAdmin.html">Back</a></p>
+<a href="createCategory.html">Create Category</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>DELETE</th>
+        <th>EDIT</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+<script>
+    $.ajax({
+        url:"http://localhost:8080/api/categories",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listCategory = data.content;
+            drawCategory(listCategory);
+        }
+    })
+    function drawCategory(list){
+        let drawCategory='';
+        for (let i = 0; i < list.length; i++) {
+            console.log(list[i])
+            console.log("data",list)
+            drawCategory+=`<tr>
+<td>${list[i].id}</td>
+<td>${list[i].name}</td>
+ <td><a href="deleteCategory.html?id=${list[i].id}">Delete</a></td>
+  <td><a href="editCategory.html?id=${list[i].id}">Edit</a></td>
+</tr>`
+        }
+        document.getElementById("tbody").innerHTML=drawCategory;
+    }
+
+</script>
+</body>
+</html>
