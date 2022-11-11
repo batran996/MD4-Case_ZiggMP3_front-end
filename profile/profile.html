@@ -3,8 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
+<h1>Profile user</h1>
+<a href="../ziggmp3/index.html"><button> Trang chu </button></a>
+<table border="1">
+    <tr>
+        <td>name</td>
+        <td><input id="name" type="text"></td>
+    </tr>
+    <tr>
+        <td>username</td>
+        <td><input id="username" type="text"></td>
+    </tr>
+    <tr>
+        <td>avatar</td>
+        <td><img style="width: 50px;height: 50px;border-radius: 30%" id="avatar"></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input id="email" type="text"></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input id="pass" type="password"></td>
+    </tr>
+    <tr>
+        <td>Role</td>
+        <td id="role">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="../ziggmp3/index.html"><button style="width: 100% ;color: #c308e2">back</button></a>
+        </td>
+        <td>
+            <button style="width: 100% ; color: #030000" onclick="editProfile()">changer</button>
+        </td>
+    </tr>
+</table>
+<script>
+    let query = window.location.search;
+    let id = new URLSearchParams(query).get("id");
+    $(document).ready(function () {
+        getUserById();
+    })
+    function getUserById() {
+        $.ajax({
+            url: "https://zigmp3.herokuapp.com/api/auth/" + id,
+            method: "GET",
+            success: function (data) {
+                alert("start edit")
+                console.log(data)
+                $("#name").val(data.name);
+                $("#username").val(data.username);
+                $("#avatar").attr("src",data.avatar);
+                $("#email").val(data.email);
+                $("#pass").val(data.password);
+                $("#role").val(data.roles[0].id)
+                return;
+            },
+            error: function () {
+                alert("user not found")
+            }
+        })
+    }
+
+    function editProfile() {
+        let profileEdit = {
+            name: $("#name").val(),
+            username: $("#username").val(),
+            avatar: $("#avatar").val(),
+            email: $("#email").val(),
+            password: $("#pass").val(),
+            roles:$("#role").val()
+        }
+        console.log(profileEdit)
+        $.ajax({
+            url: "https://zigmp3.herokuapp.com/api/admin/" + id,
+            method: "PUT",
+            data: JSON.stringify(profileEdit),
+            contentType: "application/json; charset=utf-8",
+            success: function f() {
+                alert("edit success")
+                return;
+            },
+            error: function () {
+                alert(" edit failer")
+            }
+        })
+    }
+
+</script>
 
 </body>
 </html>
