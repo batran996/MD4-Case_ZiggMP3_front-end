@@ -51,34 +51,6 @@
         // getCategory();
         getUserById();
     })
-    // function getCategory() {
-    //     $.ajax({
-    //         url: "http://localhost:8080/api/category",
-    //         method: "GET",
-    //
-    //         success: function (data) {
-    //             console.log(data.content)
-    //             let categorys = data.content;
-    //             let select = $("#category");
-    //
-    //             for (let i = 0; i < categorys.length; i++) {
-    //                 let cate = categorys[i];
-    //                 select.append(
-    //                     `
-    //                 <option value="${cate.id}">
-    //                 ${cate.name}
-    //                 </option>
-    //                 `)
-    //
-    //             }
-    //         },
-    //         error: function () {
-    //             alert('error')
-    //         }
-    //
-    //     })
-    //
-    // }
     function getUserById() {
         $.ajax({
             url: "https://zigmp3.herokuapp.com/api/admin/" + id,
