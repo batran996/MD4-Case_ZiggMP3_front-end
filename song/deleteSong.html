@@ -5,6 +5,40 @@
     <title>Title</title>
 </head>
 <body>
-
+<h1>Delete Song</h1>
+<a href="../song/upload-song.html">Back list Song</a>
+<table>
+    <tr>
+        <td>name</td>
+        <td><input id="name" type="text"></td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td><input id="url" type="text"></td>
+    </tr>
+    <tr>
+        <td>Back Grow</td>
+        <td><img style="width: 50px;height: 50px;border-radius: 30%" id="img" type="text"></td>
+    </tr>
+    <tr>
+        <td>Time</td>
+        <td><input id="time" type="text"></td>
+    </tr>
+    <tr>
+        <td>
+            <a href="../song/upload-song.html">No back list Song</a>
+        </td>
+        <td>
+            <button style="width: 100%;color: #030000" onclick="deleteSong()">delete</button>
+        </td>
+    </tr>
+</table>
+<script>
+    function getSongById() {
+        $.ajax({
+            url:"http://localhost:8080/api/song"
+        })
+    }
+</script>
 </body>
 </html>

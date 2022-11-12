@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+<p><a href="listSinger.html">Back</a></p>
+<table border="1">
+    <p id="edit"></p>
+    <tr>
+        <td>name</td>
+        <td><input type="text" id="nameSinger"></td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="editSinger()">edit</button>
+        </td>
+        <td><a href="listSinger.html">back</a></td>
+    </tr>
+</table>
+<script>
+    let query = window.location.search;
+    let id = new URLSearchParams(query).get("id");
+    $(document).ready(function () {
+        getCountry();
+    })
+
+    function getCountry() {
+        $.ajax({
+            url: 'http://localhost:8080/api/singer/' + id,
+            method: 'GET',
+            headers:{
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
+            },
+            contentType: 'application/Json; charset=UTF-8',
+            success: function (data) {
+                $('#nameSinger').val(data.name);
+                return;
+            },
+            error: function () {
+                document.getElementById('delete').innerHTML = "country does not exist!!";
+            }
+        })
+    }
+
+    function editSinger() {
+        let singer = {
+            name: $('#nameSinger').val()
+        }
+        $.ajax({
+            url: 'http://localhost:8080/api/singer/' + id,
+            method: 'PUT',
+            data: JSON.stringify(singer),
+            contentType: 'application/Json; charset=UTF-8',
+            headers:{
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
+            },
+            success: function () {
+                document.getElementById('edit').innerHTML = "edit success!"
+                return;
+            },
+            error: function () {
+                document.getElementById('edit').innerHTML = "edit failer"
+            }
+        })
+    }
+</script>
+</body>
+</html>

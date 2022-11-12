@@ -3,8 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
 <h1>list singer</h1>
+<p><a href="createSinger.html">Create Singer</a></p>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>DELETE</th>
+        <th>EDIT</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+<script>
+    let url="http://localhost:8080/api/singer";
+    $(document).ready(function () {
+        showForm();
+    })
+
+    function showForm() {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: 'application/Json; charset=UTF-8',
+            headers:{
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
+            },
+            success: function (data) {
+                let drawTable = ''
+                for (let i = 0; i < data.length; i++) {
+                    console.log("data", data[i])
+                    drawTable += `<tr>
+<td>${data[i].id}</td>
+<td>${data[i].name}</td>
+ <td><a href="deleteSinger.html?id=${data[i].id}">delete</a></td>
+  <td><a href="editSinger.html?id=${data[i].id}">edit</a></td>
+</tr>`
+                }
+                document.getElementById('tbody').innerHTML = drawTable
+
+            }
+        })
+    }
+</script>
 </body>
 </html>

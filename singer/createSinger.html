@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+<p><a href="listSinger.html">Back</a></p>
+<table border="1">
+    <p id="create"></p>
+    <tr>
+        <td>Name</td>
+        <td><input type="text" id="nameSinger"></td>
+    </tr>
+    <tr>
+        <td><button id="button">Create</button></td>
+        <td><a href="listSinger.html">Back</a></td>
+    </tr>
+</table>
+<script>
+    $(document).ready(function () {
+        $('#button').click(function () {
+        let nameSinger={
+            name:$('#nameSinger').val(),
+        }
+        console.log(JSON.stringify(nameSinger))
+        $.ajax({
+            url:'http://localhost:8080/api/singer',
+            method: 'POST',
+            headers: {
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
+            },
+            contentType: 'application/Json; charset=UTF-8',
+            data: JSON.stringify(nameSinger),
+            success: function () {
+                document.getElementById('create').innerHTML = "create success!"
+                return;
+            },
+            error: function () {
+                document.getElementById('create').innerHTML = "no them dc "
+            }
+        })
+
+    })
+})
+</script>
+</body>
+</html>

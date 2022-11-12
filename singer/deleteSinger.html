@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
+<p><a href="listSinger.html">Back</a></p>
 <table border="1">
     <p id="delete"></p>
     <tr>
-        <td>Name</td>
-        <td><input type="text" id="nameCategory"></td>
+        <td>name</td>
+        <td><input type="text" id="nameSinger"></td>
     </tr>
     <tr>
-        <td><button onclick="deleteCategory()">delete</button></td>
-        <td><a href="listCategory.html">back list</a></td>
+        <td><button onclick="deleteSinger()">delete</button></td>
+        <td><a href="listSinger.html">back list</a></td>
     </tr>
 </table>
 
@@ -24,35 +24,38 @@
     let id = new URLSearchParams(query).get("id");
     console.log(id)
     $(document).ready(function (){
-        getCategory()
+        getCountry()
     })
-    function getCategory(){
+    function getSinger(){
         $.ajax({
-            url:'http://localhost:8080/api/categories/'+id,
+            url:'http://localhost:8080/api/singer/'+id,
             method:'GET',
+            headers:{
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
+            },
             contentType:'application/Json; charset=UTF-8',
             success: function (data){
-                $('#nameCategory').val(data.name);
+                $('#nameSinger').val(data.name);
                 return;
             },
             error: function (){
-                document.getElementById('delete').innerHTML = "category does not exist!!";
+                document.getElementById('delete').innerHTML = "country does not exist!!";
             }
         })
     }
-    function deleteCategory() {
-        let category = {
+    function deleteSinger() {
+        let singer = {
             name : $('#name')
         }
         $.ajax({
-            url:'http://localhost:8080/api/categories/'+id,
+            url:'http://localhost:8080/api/singer/'+id,
             method:'DELETE',
+            data: JSON.stringify(singer),
             headers:{
-                Authorization:"Bearer" + window.localStorage.getItem('TOKEN_KEY')
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
             },
-            data: JSON.stringify(category),
             contentType:'application/Json; charset=UTF-8',
-            success:function category(){
+            success:function singer(){
                 document.getElementById('delete').innerHTML = "delete_success!"
                 return;
             },error: function (){

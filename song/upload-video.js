@@ -65,10 +65,12 @@ fileButton.addEventListener('change', function (e) {
 
 $('#create').click(function () {
     let uploadSong={};
-    uploadSong.name=document.getElementById('title').value;
-    uploadSong.song=downloadURL;
-    uploadSong.idCategory=document.getElementById("category").value;
-    console.log(uploadSong)
+    uploadSong.background=document.getElementById('backgrow').value;
+    uploadSong.name=document.getElementById('name').value;
+    uploadSong.pathSong=downloadURL;
+    uploadSong.category=document.getElementById("category").value;
+    uploadSong.singers=document.getElementById('singer').value;
+    console.log("uploadvideo ------------->",uploadSong)
 
 
 
@@ -79,12 +81,11 @@ $('#create').click(function () {
         contentType:'application/json; charset=UTF8',
         headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
         },
-        success:function (data){
-            console.log('data',data)
+        success:function (){
             document.getElementById('add').innerHTML = "create success!"
             return;
         },
-        error: function (data){
+        error: function(){
             document.getElementById('add').innerHTML = "create failed ! "
         }
     })
