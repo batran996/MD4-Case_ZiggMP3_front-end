@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-<h1>list singer</h1>
-<p><a href="createSinger.html">Create Singer</a></p>
+<p><a href="../../homeAdmin.html">Back</a></p>
+<a href="createSinger.html">Create Singer</a>
 <table border="1">
     <thead>
     <tr>
@@ -20,35 +20,33 @@
     <tbody id="tbody"></tbody>
 </table>
 <script>
-    let url="http://localhost:8080/api/singer";
-    $(document).ready(function () {
-        showForm();
+    $.ajax({
+        url:"http://localhost:8080/api/singer",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listSinger= data.content;
+            drawSinger(listSinger);
+        }
     })
-
-    function showForm() {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            contentType: 'application/Json; charset=UTF-8',
-            headers:{
-                Authorization: window.localStorage.getItem('TOKEN_KEY')
-            },
-            success: function (data) {
-                let drawTable = ''
-                for (let i = 0; i < data.length; i++) {
-                    console.log("data", data[i])
-                    drawTable += `<tr>
+    function drawSinger(data){
+        let drawSinger='';
+        for (let i = 0; i < data.length; i++) {
+            console.log(data[i])
+            console.log("data",data)
+            drawSinger+=`<tr>
 <td>${data[i].id}</td>
 <td>${data[i].name}</td>
- <td><a href="deleteSinger.html?id=${data[i].id}">delete</a></td>
-  <td><a href="editSinger.html?id=${data[i].id}">edit</a></td>
+ <td><a href="deleteSinger.html?id=${data[i].id}">Delete</a></td>
+  <td><a href="editSinger.html?id=${data[i].id}">Edit</a></td>
 </tr>`
-                }
-                document.getElementById('tbody').innerHTML = drawTable
-
-            }
-        })
+        }
+        document.getElementById("tbody").innerHTML=drawSinger;
     }
+
 </script>
 </body>
 </html>

@@ -24,7 +24,7 @@
     let id = new URLSearchParams(query).get("id");
     console.log(id)
     $(document).ready(function (){
-        getCountry()
+        getSinger()
     })
     function getSinger(){
         $.ajax({
@@ -39,7 +39,7 @@
                 return;
             },
             error: function (){
-                document.getElementById('delete').innerHTML = "country does not exist!!";
+                document.getElementById('delete').innerHTML = "Singer does not exist!!";
             }
         })
     }
