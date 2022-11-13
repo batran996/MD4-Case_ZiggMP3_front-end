@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../../fragment/include.js"></script>
+</head>
+<body>
+<p id="create" style="color: coral"></p>
+<span style="color: red" id="validate"></span>
+
+<div id="loading"></div>
+<input type="file" id="backgrow" value="image"><br>
+<progress id="progressimg"></progress><br>
+<input type="text" id="pathimg" placeholder="link image"><br>
+<input type="file" value="upload"  id="fileVideo"><br>
+<progress id="progress"></progress><br>
+<input type="text" id="pathSong" placeholder="link video"><br>
+<input type="text" id="name" placeholder="name video"><br>
+<input type="text" id="duration" placeholder="duration"><br>
+<div>
+    <select id="category">
+    </select>
+</div>
+<div>    <select id="singer">
+</select>
+</div>
+<button id="button">create</button><br>
+<script>
+    $.ajax({
+        url:"http://localhost:8080/api/singer",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listSinger = data.content;
+            drawSinger(listSinger);
+        }
+    })
+    function drawSinger(list){
+        let drawOption='';
+        for (let i = 0; i < list.length; i++) {
+            console.log("data",list[i])
+            drawOption+=`<option value="${list[i].id}">${list[i].name}</option>`
+        }
+        document.getElementById("singer").innerHTML=drawOption;
+    }
+    $.ajax({
+        url:"http://localhost:8080/api/categories",
+        method:'GET',
+        contentType:'application/json; charset=UTF8',
+        headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+        },
+        success:function (data){
+            console.log(data.content)
+            let listCategory = data.content;
+            drawSelect(listCategory);
+        }
+    })
+    function drawSelect(list){
+        let drawOption='';
+        for (let i = 0; i < list.length; i++) {
+            console.log("data",list[i])
+            drawOption+=`<option value="${list[i].id}">${list[i].name}</option>`
+        }
+        document.getElementById("category").innerHTML=drawOption;
+    }
+</script>
+<script type="module">
+
+    import {Firebase} from "./upload-img";
+
+    const firebase = new Firebase();
+
+    // Set information
+    firebase.setProgress('#progressimg');
+    firebase.setDownloadUrl('#pathimg')
+
+    const input = $('backgrow')
+
+    // Upload file when input
+    input.change(function () {
+        // Get file
+        let data = input.prop('files')
+        let file = data[0];
+
+        firebase.setLocation('/images/' + file.name);
+        firebase.upload(file);
+
+    });
+
+</script>
+<script type="module">
+
+    import {Firebase} from "./upload-video";
+
+    const firebase = new Firebase();
+
+    // Set information
+    firebase.setProgress('#progress');
+    firebase.setDownloadUrl('#pathSong')
+
+    const input = $('fileVideo')
+
+    // Upload file when input
+    input.change(function () {
+        // Get file
+        let data = input.prop('files')
+        let file = data[0];
+
+        firebase.setLocation('/videos/' + file.name);
+        firebase.upload(file);
+
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#button').click(function () {
+            let video = {
+                pathSong: $('#pathSong').val(),
+                name: $('#name').val(),
+                duration: $('#duration').val(),
+                category: $('#category').val(),
+                singers:$('#singer').val(),
+            }
+            console.log(JSON.stringify(video))
+            $.ajax({
+                url: 'http://localhost:8080/api/song',
+                method: 'POST',
+                headers: {
+                    Authorization: window.localStorage.getItem('TOKEN_KEY')
+                },
+                contentType: 'application/Json; charset=UTF-8',
+                data: JSON.stringify(video),
+                success: function () {
+                    document.getElementById('create').innerHTML = "create success!";
+                    return;
+                },
+                error: function () {
+                    document.getElementById('create').innerHTML = "video invalid"
+                }
+            })
+        })
+    })
+
+</script>
+</body>
+</html>

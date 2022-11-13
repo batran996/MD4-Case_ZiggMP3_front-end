@@ -3,8 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-
+<p><a href="listSong.html">Back</a></p>
+<table border="1">
+    <p id="edit"></p>
+    <tr>
+        <td>url</td>
+        <td><input type="text"id="urlSong"></td>
+    </tr>
+    <tr>
+        <td>name</td>
+        <td><input type="text"id="nameSong"></td>
+    </tr>
+    <tr>
+        <td><button onclick="editVideo()">edit</button></td>
+        <td><a href="listSong.html.html">back</a></td>
+    </tr>
+</table>
+<script>
+    let query = window.location.search;
+    let id = new URLSearchParams(query).get("id")
+    $(document).ready(function (){
+        getVideo();
+    })
+    function getVideo(){
+        $.ajax({
+            url:'http://localhost:8080/api/song'+id,
+            method:'GET',
+            headers:{
+                Authorization: "Bearer " + window.localStorage.getItem('TOKEN_KEY')
+            },
+            contentType:'application/Json; charset=UTF-8',
+            success:function (data){
+                $('#urlVideo').val(data.url),
+                    $('#nameVideo').val(data.name),
+                    $('#viewVideo').val(data.view),
+                    $('#rateVideo').val(data.rate);
+                return;
+            },
+            error:function (){
+                document.getElementById('edit').innerHTML = "video does not exist!!"
+            }
+        })
+    }
+    function editVideo(){
+        let videos = {
+            url:$('#urlVideo').val(),
+            name:$('#nameVideo').val(),
+            view: $('#viewVideo').val(),
+            rate: $('#rateVideo').val()
+        }
+        $.ajax({
+            url:'http://localhost:8080/api/song'+id,
+            method: 'PUT',
+            headers:{
+                Authorization: "Bearer " + window.localStorage.getItem('TOKEN_KEY')
+            },
+            data:JSON.stringify(videos),
+            contentType:'application/Json; charset=UTF-8',
+            success:function (){
+                document.getElementById('edit').innerHTML = 'edit success!!'
+                return;
+            },
+            error:function (){
+                document.getElementById('edit').innerHTML = 'edit failer'
+            }
+        })
+    }
+</script>
 </body>
 </html>

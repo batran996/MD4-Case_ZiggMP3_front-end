@@ -3,40 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-<h1>Delete Song</h1>
-<a href="../song/upload-song.html">Back list Song</a>
-<table>
+<p><a href="listSong.html">Back</a></p>
+<table border="1">
+    <p id="deletes"></p>
+    <tr>
+        <td>url</td>
+        <td><input type="text" id="urls"></td>
+    </tr>
     <tr>
         <td>name</td>
-        <td><input id="name" type="text"></td>
+        <td><input type="text" id="names"></td>
     </tr>
     <tr>
-        <td>URL</td>
-        <td><input id="url" type="text"></td>
-    </tr>
-    <tr>
-        <td>Back Grow</td>
-        <td><img style="width: 50px;height: 50px;border-radius: 30%" id="img" type="text"></td>
-    </tr>
-    <tr>
-        <td>Time</td>
-        <td><input id="time" type="text"></td>
+        <td>time</td>
+        <td><input type="text" id="times"></td>
     </tr>
     <tr>
         <td>
-            <a href="../song/upload-song.html">No back list Song</a>
+            <button onclick="deleteVideo()">delete</button>
         </td>
-        <td>
-            <button style="width: 100%;color: #030000" onclick="deleteSong()">delete</button>
-        </td>
+        <td><a href="../song/listSong.html">back</a></td>
     </tr>
 </table>
 <script>
-    function getSongById() {
+    let query = window.location.search;
+    let id = new URLSearchParams(query).get("id")
+    $(document).ready(function () {
+        getVideo();
+    })
+
+    function getVideo() {
         $.ajax({
-            url:"http://localhost:8080/api/song"
+            url:"http://localhost:8080/api/song",
+            method:'GET',
+            contentType:'application/json; charset=UTF8',
+            headers:{'Authorization':'Bearer '+window.localStorage.getItem('TOKEN_KEY')
+            },
+            success:function (data){
+                $('#urls').val(data.content.pathSong),
+                    $('#names').val(data.content.name),
+                    $('#times').val(data.content.duration)
+                return;
+            },
+            error: function () {
+                document.getElementById('deletes').innerHTML = "video does not exist!!"
+            }
+        })
+    }
+
+    function deleteVideo() {
+        let videos = {
+            url: $('#urls').val(),
+            name: $('#names').val(),
+            duration: $('#times').val(),
+        }
+        $.ajax({
+            url: 'http://localhost:8080/api/song' + id,
+            method: 'DELETE',
+            headers:{
+                Authorization: window.localStorage.getItem('TOKEN_KEY')
+            },
+            data: JSON.stringify(videos),
+            contentType: 'application/Json; charset=UTF-8',
+            success: function () {
+                document.getElementById('deletes').innerHTML = 'delete_success!!!'
+            },
+            error: function () {
+                document.getElementById('deletes').innerHTML = 'delete_failer!'
+            }
         })
     }
 </script>
