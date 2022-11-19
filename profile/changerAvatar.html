@@ -2,6 +2,10 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Testing file upload</title>
 </head>
 
@@ -10,9 +14,34 @@
 <progress value="0" max="100" id="uploader">0%</progress>
 <input type="file" value="upload" accept=".jpg" id="fileButton">
 <h1>Hello GFG</h1>
+<input type="text" id="img">
+<p style="color: #4a90e2" id="success"></p>
 <div id="imgDiv"></div>
-<img src="https://firebasestorage.googleapis.com/v0/b/chinhbeo-c6220.appspot.com/o/images%2FCau%205.jpg?alt=media&token=9ec0a8fb-ee3a-4aeb-8874-8e1c5465a335">
+<button onclick="changAvatar()">Submit</button>
+<a href="../ziggmp3/index.html"><button>trang chủ</button></a>
 <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+<script>
+    function changAvatar() {
+        let changerAvatarDTO={
+          avatar: $("#img").val()
+        }
+        $.ajax({
+            url:"https://zigmp3.herokuapp.com/api/auth/changer/avatar",
+            method:"PUT",
+            contentType: 'application/json; charset=UTF8',
+            headers : {'Authorization': 'Bearer'+window.localStorage.getItem('TOKEN_KEY')},
+            data: JSON.stringify(changerAvatarDTO),
+            success:function (data) {
+                console.log(data);
+                $("#success").html("Thay đổi avatar thành công");
+            },
+            error: function () {
+                alert("failed")
+            }
+        })
+    }
+</script>
 <script>
 
     //BE SURE TO PROTECT EVERYTHING IN THE CONFIG
@@ -94,7 +123,7 @@
                         break;
                 }
             },
-        function () {
+            function () {
                 // Upload completed successfully, now we can get the download URL
                 // save this link somewhere, e.g. put it in an input field
                 var downloadURL = uploadTask.snapshot.downloadURL;
@@ -103,8 +132,10 @@
                 let divLocation = document.getElementById("imgDiv");
                 let imgElement = document.createElement("img");
                 imgElement.src = downloadURL
+                imgElement.style.width = '200px';
                 console.log('pic ==', image)
                 divLocation.append(imgElement);
+                $('#img').val(downloadURL);
             });
 
     });

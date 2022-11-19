@@ -133,7 +133,6 @@ function actionLogin(data){
         success: function(res) {
             console.log('day laf ressss',res)
             loginSuccess(res);
-
             window.localStorage.setItem("NAME_KEY",res.name);
             window.localStorage.setItem("TOKEN_KEY",res.token);
             window.localStorage.setItem("AVATAR_KEY",res.avatar);

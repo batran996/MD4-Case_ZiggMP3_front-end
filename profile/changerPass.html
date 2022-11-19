@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<a href="../ziggmp3/index.html"><button> Trang chu </button></a>
+<p style="color: #4a90e2" id="success"></p>
+<table border="1">
+    <tr>
+        <td>password</td>
+        <td><input name="pass" id="pass" type="text"></td>
+    </tr>
+    <tr>
+        <td>new password</td>
+        <td><input id="newPass" type="text"></td>
+    </tr>
+
+    <tr>
+        <td>repeat password</td>
+        <td><input id="rePass" type="text"></td>
+    </tr>
+    <tr>
+        <td>
+            <button style="width: 100% ;color: #c308e2" onclick="editPass()" >Đổi password</button>
+        </td>
+    </tr>
+</table>
+
+<script>
+    function editPass() {
+    let changerPassDTO={
+        password : $("#pass").val(),
+        newPass : $("#newPass").val(),
+        rePass : $("#rePass").val()
+    }
+    $.ajax({
+        url:"https://zigmp3.herokuapp.com/api/auth/changer/pass",
+        method:"PUT",
+        contentType: 'application/json; charset=UTF8',
+        headers : {'Authorization': 'Bearer'+window.localStorage.getItem('TOKEN_KEY')},
+        data: JSON.stringify(changerPassDTO),
+        success:function (data) {
+            $("#success").html("Thay đổi mật khẩu thành công")
+        },
+        error: function () {
+            alert("failed")
+        }
+    })
+
+    }
+
+
+</script>
+</body>
+</html>

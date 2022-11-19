@@ -22,6 +22,7 @@
     <tr>
         <td>avatar</td>
         <td><img style="width: 50px;height: 50px;border-radius: 30%" id="avatar"></td>
+
     </tr>
     <tr>
         <td>Email</td>
@@ -29,42 +30,35 @@
     </tr>
     <tr>
         <td>Password</td>
-        <td><input id="pass" type="password"></td>
-    </tr>
-    <tr>
-        <td>Role</td>
-        <td id="role">
-
-        </td>
+        <td>*********</td>
     </tr>
     <tr>
         <td>
-            <a href="../ziggmp3/index.html"><button style="width: 100% ;color: #c308e2">back</button></a>
+            <a href="../profile/changerPass.html"><button style="width: 100% ;color: #c308e2">Đổi password</button></a>
         </td>
         <td>
-            <button style="width: 100% ; color: #030000" onclick="editProfile()">changer</button>
+            <a href="../profile/changerAvatar.html"><button style="width: 100% ; color: #030000" >Đổi avatar</button> </a>
         </td>
     </tr>
 </table>
 <script>
-    let query = window.location.search;
-    let id = new URLSearchParams(query).get("id");
     $(document).ready(function () {
         getUserById();
     })
     function getUserById() {
         $.ajax({
-            url: "https://zigmp3.herokuapp.com/api/auth/" + id,
+            url: "https://zigmp3.herokuapp.com/api/auth/profile",
             method: "GET",
+            contentType: 'application/json; charset=UTF8',
+            headers : {'Authorization': 'Bearer'+window.localStorage.getItem('TOKEN_KEY')},
             success: function (data) {
+                console.log(data)
                 alert("start edit")
                 console.log(data)
                 $("#name").val(data.name);
                 $("#username").val(data.username);
                 $("#avatar").attr("src",data.avatar);
                 $("#email").val(data.email);
-                $("#pass").val(data.password);
-                $("#role").val(data.roles[0].id)
                 return;
             },
             error: function () {
@@ -84,7 +78,7 @@
         }
         console.log(profileEdit)
         $.ajax({
-            url: "https://zigmp3.herokuapp.com/api/admin/" + id,
+            url: "Http://localhost:5000/api/auth/profile",
             method: "PUT",
             data: JSON.stringify(profileEdit),
             contentType: "application/json; charset=utf-8",
